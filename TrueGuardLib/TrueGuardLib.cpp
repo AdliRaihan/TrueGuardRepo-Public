@@ -4,6 +4,7 @@
 // My Mod
 #include "Sources/NPCInventoryCases/NPCInventoryCases.h"
 #include "Sources/InputEventListener/InputEventListener.h"
+#include "Sources/MinHookInt/TGLUIHooksDx11.h"
 
 // Just For Debug Entry Point
 #include <Windows.h>
@@ -29,6 +30,10 @@ SKSEPluginLoad(const SKSE::LoadInterface* skse) {
     
     // --> If Running should return handle != 0 in the logs
     SKSE::Init(skse);
+
+    if (TGLUIHook_Initialization()) {
+
+    }
 
     SKSE::GetMessagingInterface()->RegisterListener([](SKSE::MessagingInterface::Message* msg) {
         switch (msg->type) {

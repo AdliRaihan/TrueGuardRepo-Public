@@ -24,19 +24,38 @@ endif()
 add_library(TrueGuardLib SHARED
   TrueGuardLib/TrueGuardLib.cpp
  "TrueGuardLib/Sources/NPCInventoryCases/NPCInventoryCases.h" 
- "TrueGuardLib/Sources/NPCInventoryCases/NPCInventoryCases.cpp" "TrueGuardLib/Sources/InputEventListener/InputEventListener.h" "TrueGuardLib/Sources/InputEventListener/InputEventListener.cpp")
+ "TrueGuardLib/Sources/NPCInventoryCases/NPCInventoryCases.cpp" 
+ "TrueGuardLib/Sources/InputEventListener/InputEventListener.h" 
+ "TrueGuardLib/Sources/InputEventListener/InputEventListener.cpp" 
+ "TrueGuardLib/Sources/ImGUI/ImGUIHooks.h"
+ "TrueGuardLib/Sources/ImGUI/ImGUIHooks.cpp"
+ "TrueGuardLib/Sources/MinHookInt/TGLUIHooksDx11.h"
+ "TrueGuardLib/Sources/MinHookInt/TGLUIHooksDx11.cpp")
 
+ add_library(imgui STATIC
+    external/imgui/imgui.cpp
+    external/imgui/imgui_draw.cpp
+    external/imgui/imgui_widgets.cpp
+    external/imgui/imgui_tables.cpp
+    external/imgui/backends/imgui_impl_dx11.cpp
+    external/imgui/backends/imgui_impl_win32.cpp
+)
+
+target_include_directories(imgui PUBLIC external/imgui external/imgui/backends)
 
 # I forgor to add branch -dev, but anyway
 # next time git this module with `-b dev`
 target_link_libraries (TrueGuardLib PRIVATE CommonLibSSE::CommonLibSSE)
+target_link_libraries (TrueGuardLib PRIVATE imgui)
 
 # *W* SPEED *W*
 find_package (spdlog REQUIRED)
 find_package(fmt REQUIRED)
+find_package(minhook CONFIG REQUIRED)
 
 # If Error
 target_link_libraries(TrueGuardLib PRIVATE spdlog::spdlog)
+target_link_libraries(TrueGuardLib PRIVATE minhook::minhook)
 
 set(THONG_BOTTOM "D:\\SteamLibrary\\steamapps\\common\\Skyrim Special Edition\\Data\\SKSE\\Plugins")
 
@@ -46,4 +65,3 @@ add_custom_command(TARGET TrueGuardLib POST_BUILD
         ${THONG_BOTTOM}/$<TARGET_FILE_NAME:TrueGuardLib>)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${THONG_BOTTOM})
-
