@@ -4,7 +4,7 @@ IDXGISwapChain* swapChainHook;
 ID3D11Device* deviceHook;
 ID3D11DeviceContext* contextHook;
 
-void* TGLUIHook_GetPresentAddr()
+static void* TGLUIHook_GetPresentAddr()
 {
     DXGI_SWAP_CHAIN_DESC scd{};
     // Setting Up DXSwap Chain

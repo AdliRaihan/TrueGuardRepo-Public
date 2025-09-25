@@ -1,4 +1,9 @@
 #include "ImGUIHooks.h"
+#include <corecrt_math.h>
+
+#include <format>
+#include <string>
+#include <iostream>
 
 // Device
 ID3D11Device* device;
@@ -9,13 +14,13 @@ ID3D11RenderTargetView* mainRTV;
 
 HRESULT(__stdcall* oPresent)(IDXGISwapChain* swap, UINT sync, UINT flags);
 
-// ResizeBuffers_t oResizeBuffers;
-static WNDPROC g_OrigWndProc = nullptr;
-static bool g_UiOpen = true; // toggle however you like
+UIInterfaceInjection* injectedDrawing = nullptr;
 
-LRESULT CALLBACK WndProcHook(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-    return CallWindowProc(g_OrigWndProc, hWnd, msg, wParam, lParam);
-}
+ImFont* boldFont;
+ImFont* regularFont;
+
+// Toggle it 
+bool g_menuOpen = false; 
 
 HRESULT __stdcall hkPresent(IDXGISwapChain* swap, UINT sync, UINT flags) {
     static bool init = false;
@@ -31,28 +36,45 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* swap, UINT sync, UINT flags) {
         ImGui::CreateContext();
         ImGui_ImplWin32_Init(hwnd);
         ImGui_ImplDX11_Init(device, context);
+
+        ImGuiIO& _ioPtr = ImGui::GetIO();
+
+        _ioPtr.Fonts->AddFontDefault();
+
+        boldFont = _ioPtr.Fonts->AddFontFromFileTTF(
+            "Data/SKSE/Plugins/TrueGuardAssets/fonts/Quicksand-Bold.ttf", 16
+        );
+
+        regularFont = _ioPtr.Fonts->AddFontFromFileTTF(
+            "Data/SKSE/Plugins/TrueGuardAssets/fonts/Quicksand-Regular.ttf", 16
+        );
+
+        ImGui_ImplDX11_CreateDeviceObjects();
+
         ImGui::StyleColorsDark();
 
         init = true;
     }
 
+    if (!g_menuOpen)
+        return oPresent(swap, sync, flags);
+
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::Begin("Hello Skyrim + (MinHook & IMGUI)!", nullptr, ImGuiWindowFlags_None);
-    ImGui::Text("Testing functionality Bruh!");
-
-    ImGuiIO& _ioPtr = ImGui::GetIO();
-    _ioPtr.WantCaptureMouse = false;
-    _ioPtr.MouseDrawCursor = true;
-
-    ImGui::End();
+    if (injectedDrawing != nullptr)
+        injectedDrawing->draw();
 
     ImGui::Render();
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
     return oPresent(swap, sync, flags);
+}
+
+void injectUI(UIInterfaceInjection* uiInjection) {
+    uiInjection->pushFont(regularFont, boldFont);
+    injectedDrawing = uiInjection;
 }
 
 
@@ -66,4 +88,8 @@ static void CreateRenderTarget(IDXGISwapChain* swap) {
 
 static void ReleaseRenderTarget() {
     if (mainRTV) { mainRTV->Release(); mainRTV = nullptr; }
+}
+
+void toggleMenu() {
+    g_menuOpen = !g_menuOpen;
 }
