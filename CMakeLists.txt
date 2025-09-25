@@ -30,7 +30,7 @@ add_library(TrueGuardLib SHARED
  "TrueGuardLib/Sources/ImGUI/ImGUIHooks.h"
  "TrueGuardLib/Sources/ImGUI/ImGUIHooks.cpp"
  "TrueGuardLib/Sources/MinHookInt/TGLUIHooksDx11.h"
- "TrueGuardLib/Sources/MinHookInt/TGLUIHooksDx11.cpp")
+ "TrueGuardLib/Sources/MinHookInt/TGLUIHooksDx11.cpp" "TrueGuardLib/Sources/Constanta/GlobalConstant.h" "TrueGuardLib/Sources/ImGUI/UIs/DutyGuardUI.h" "TrueGuardLib/Sources/Constanta/GlobalConstant.cpp" "TrueGuardLib/Sources/DependencyInjection/UIInterfaceInjection.h" "TrueGuardLib/Sources/ImGUI/UIs/DutyGuardUI.cpp")
 
  add_library(imgui STATIC
     external/imgui/imgui.cpp
@@ -38,8 +38,7 @@ add_library(TrueGuardLib SHARED
     external/imgui/imgui_widgets.cpp
     external/imgui/imgui_tables.cpp
     external/imgui/backends/imgui_impl_dx11.cpp
-    external/imgui/backends/imgui_impl_win32.cpp
-)
+    external/imgui/backends/imgui_impl_win32.cpp)
 
 target_include_directories(imgui PUBLIC external/imgui external/imgui/backends)
 
