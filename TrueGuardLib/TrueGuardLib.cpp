@@ -1,15 +1,19 @@
 ﻿
 #include "TrueGuardLib.h"
 
+// My Mod
+#include "Sources/NPCInventoryCases/NPCInventoryCases.h"
+
 // Just For Debug Entry Point
 #include <Windows.h>
 
 // Entry Point SKSE - Skyrim 
 SKSEPluginVersion = []() {
     SKSE::PluginVersionData v{};
-    v.PluginName("SkyrimRelationshipSKSE");
-    v.AuthorName("YourName");
+    v.PluginName("TrueGuardLib");
+    v.AuthorName("Dlyz");
     v.PluginVersion({ 1, 0, 0, 0 });
+    // I dont think this part is necessary but for exstetique
     v.UsesUpdatedStructs();
     v.UsesAddressLibrary();
     v.CompatibleVersions({ SKSE::RUNTIME_SSE_LATEST });
@@ -24,6 +28,16 @@ SKSEPluginLoad(const SKSE::LoadInterface* skse) {
     
     // --> If Running should return handle != 0 in the logs
     SKSE::Init(skse);
+
+    SKSE::GetMessagingInterface()->RegisterListener([](SKSE::MessagingInterface::Message* msg) {
+        switch (msg->type) {
+        case SKSE::MessagingInterface::kDataLoaded:
+            RegisterInventoryEvents();
+            break;
+        default:
+            break;
+        }
+    });
     
     return true;
 }

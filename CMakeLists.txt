@@ -6,7 +6,7 @@ project (TrueGuardLib LANGUAGES CXX)
 
 # Enable Hot Reload for MSVC compilers if supported.
 # Forcing everything into the core
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -23,11 +23,9 @@ endif()
 
 add_library(TrueGuardLib SHARED
   TrueGuardLib/TrueGuardLib.cpp
-)
+ "TrueGuardLib/Sources/NPCInventoryCases/NPCInventoryCases.h" 
+ "TrueGuardLib/Sources/NPCInventoryCases/NPCInventoryCases.cpp")
 
-target_include_directories(TrueGuardLib PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/Sources
-)
 
 # I forgor to add branch -dev, but anyway
 # next time git this module with `-b dev`
