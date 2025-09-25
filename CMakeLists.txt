@@ -2,14 +2,42 @@
 # and include sub-projects here.
 #
 cmake_minimum_required (VERSION 3.8)
+project (TrueGuardLib LANGUAGES CXX)
 
 # Enable Hot Reload for MSVC compilers if supported.
-if (POLICY CMP0141)
-  cmake_policy(SET CMP0141 NEW)
-  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
-endif()
+# Forcing everything into the core
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-project ("TrueGuardLib")
+# Setting up config and I don't care about any version except AE
+set(SKYRIM_SUPPORT_AE ON  CACHE BOOL "" FORCE)
+set(SKYRIM_SUPPORT_SE OFF CACHE BOOL "" FORCE)
 
 # Include sub-projects.
-add_subdirectory ("TrueGuardLib")
+add_subdirectory (external/CommonLibSSE)
+
+if(MSVC)
+  add_compile_options(/Zc:__cplusplus /permissive-)
+endif()
+
+add_library(TrueGuardLib SHARED
+  TrueGuardLib/TrueGuardLib.cpp
+)
+
+target_include_directories(TrueGuardLib PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/Sources
+)
+
+# I forgor to add branch -dev, but anyway
+# next time git this module with `-b dev`
+target_link_libraries (TrueGuardLib PRIVATE CommonLibSSE::CommonLibSSE)
+
+# *W* SPEED *W*
+find_package (spdlog REQUIRED)
+find_package(fmt REQUIRED)
+
+# If Error
+# target_link_libraries(TrueGuardLib PRIVATE spdlog::spdlog)
+
+
