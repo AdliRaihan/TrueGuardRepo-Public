@@ -24,7 +24,7 @@ endif()
 add_library(TrueGuardLib SHARED
   TrueGuardLib/TrueGuardLib.cpp
  "TrueGuardLib/Sources/NPCInventoryCases/NPCInventoryCases.h" 
- "TrueGuardLib/Sources/NPCInventoryCases/NPCInventoryCases.cpp")
+ "TrueGuardLib/Sources/NPCInventoryCases/NPCInventoryCases.cpp" "TrueGuardLib/Sources/InputEventListener/InputEventListener.h" "TrueGuardLib/Sources/InputEventListener/InputEventListener.cpp")
 
 
 # I forgor to add branch -dev, but anyway
@@ -38,4 +38,12 @@ find_package(fmt REQUIRED)
 # If Error
 target_link_libraries(TrueGuardLib PRIVATE spdlog::spdlog)
 
+set(THONG_BOTTOM "D:\\SteamLibrary\\steamapps\\common\\Skyrim Special Edition\\Data\\SKSE\\Plugins")
+
+add_custom_command(TARGET TrueGuardLib POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:TrueGuardLib>
+        ${THONG_BOTTOM}/$<TARGET_FILE_NAME:TrueGuardLib>)
+
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${THONG_BOTTOM})
 

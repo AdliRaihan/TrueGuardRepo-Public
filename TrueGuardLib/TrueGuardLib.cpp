@@ -3,6 +3,7 @@
 
 // My Mod
 #include "Sources/NPCInventoryCases/NPCInventoryCases.h"
+#include "Sources/InputEventListener/InputEventListener.h"
 
 // Just For Debug Entry Point
 #include <Windows.h>
@@ -33,6 +34,13 @@ SKSEPluginLoad(const SKSE::LoadInterface* skse) {
         switch (msg->type) {
         case SKSE::MessagingInterface::kDataLoaded:
             RegisterInventoryEvents();
+            break;
+        case SKSE::MessagingInterface::kInputLoaded:
+            RegisterInputListener();
+            break;
+        case SKSE::MessagingInterface::kPostLoadGame:
+            break;
+        case SKSE::MessagingInterface::kPreLoadGame:
             break;
         default:
             break;
