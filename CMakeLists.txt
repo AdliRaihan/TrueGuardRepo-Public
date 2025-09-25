@@ -6,7 +6,7 @@ project (TrueGuardLib LANGUAGES CXX)
 
 # Enable Hot Reload for MSVC compilers if supported.
 # Forcing everything into the core
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -38,6 +38,6 @@ find_package (spdlog REQUIRED)
 find_package(fmt REQUIRED)
 
 # If Error
-# target_link_libraries(TrueGuardLib PRIVATE spdlog::spdlog)
+target_link_libraries(TrueGuardLib PRIVATE spdlog::spdlog)
 
 

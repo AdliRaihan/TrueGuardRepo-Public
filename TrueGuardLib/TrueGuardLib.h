@@ -2,9 +2,17 @@
 // or project specific include files.
 
 #pragma once
+#define DLLEXPORT __declspec(dllexport)
+
 
 #include <iostream>
 
-// later though 
-// #include <REL/REL.h>
-// #include <SKSE/SKSE.h>
+#pragma warning(push)
+#include <RE/Skyrim.h>
+#include <REL/Relocation.h>
+#include <SKSE/SKSE.h>
+#include <SKSE/Interfaces.h>
+
+/* Utilities */
+namespace logger = SKSE::log;
+
