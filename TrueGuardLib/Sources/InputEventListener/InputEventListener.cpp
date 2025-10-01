@@ -3,8 +3,8 @@
 #include "../Constanta/GlobalConstant.h"
 
 // UIs
-#include "../ImGUI/ImGUIHooks.h"
-#include "../ImGUI/UIs/DutyGuardUI.h"
+#include "../UIHooks/TGLUIHooksDx11.h"
+#include "../UIs/DutyGuardUI.h"
 
 using namespace RE;
 
@@ -34,7 +34,6 @@ BSEventNotifyControl InputSinkEvent::ProcessEvent(
 
 		switch (dxScanCode) {
 		case RE::BSWin32KeyboardDevice::Key::kF1:
-			toggleMenu();
 			break;
 		case RE::BSWin32KeyboardDevice::Key::kG:
 			getCurrentCrosshairTarget();
@@ -78,5 +77,5 @@ void getCurrentCrosshairTarget() {
 
 	guardUI->nameDisplay = objRefs.get()->GetDisplayFullName();
 
-	injectUI(guardUI);
+	TGL::Hooks::InjectUI(guardUI);
 }
