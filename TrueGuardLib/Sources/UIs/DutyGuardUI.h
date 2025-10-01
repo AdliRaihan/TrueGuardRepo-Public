@@ -5,5 +5,6 @@
 class DutyGuardUI : public UIInterfaceInjection {
 public:
     std::string nameDisplay;
+    int relationshipRank;
     void draw() override;
 };

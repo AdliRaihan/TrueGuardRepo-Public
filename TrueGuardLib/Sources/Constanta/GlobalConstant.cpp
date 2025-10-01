@@ -1,5 +1,7 @@
 
 #include "GlobalConstant.h"
+#include <RE/Skyrim.h>
+
 using namespace std;
 // UNUSED
 // TODO: CLEAN THIS MESS :(
@@ -17,4 +19,14 @@ void GlobalConstant::toggleOverlayMenu() {
 
 void GlobalConstant::setCurrentActiveNPC(string _val) {
 	misc_CurrentActiveNPC = _val;
+}
+
+float GlobalConstant::getWidth(int div) {
+	auto* state = RE::BSGraphics::Renderer::GetSingleton();
+	return state->GetScreenSize().width / div;
+}
+
+float GlobalConstant::getHeight(int div) {
+	auto* state = RE::BSGraphics::Renderer::GetSingleton();
+	return state->GetScreenSize().height / div;
 }
