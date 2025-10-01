@@ -33,7 +33,10 @@ add_library(TrueGuardLib SHARED
  "TrueGuardLib/Sources/Constanta/GlobalConstant.cpp" 
  "TrueGuardLib/Sources/DependencyInjection/UIInterfaceInjection.h" 
  "TrueGuardLib/Sources/UIs/DutyGuardUI.h" 
- "TrueGuardLib/Sources/UIs/DutyGuardUI.cpp")
+ "TrueGuardLib/Sources/UIs/DutyGuardUI.cpp" 
+ "TrueGuardLib/Sources/DependencyInjection/UIInterfaceInjection.cpp" 
+ "TrueGuardLib/Sources/ThreadEvents/ThreadEvents.h" 
+ "TrueGuardLib/Sources/ThreadEvents/ThreadEvents.cpp")
 
  add_library(imgui STATIC
     external/imgui/imgui.cpp

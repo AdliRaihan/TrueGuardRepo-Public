@@ -55,19 +55,16 @@ static HRESULT __stdcall Hook_Present(IDXGISwapChain* sc, UINT sync, UINT flags)
 
         if (!device) {
             sc->GetDevice(__uuidof(ID3D11Device), (void**)&device);
-            spdlog::info("[Hooks] Device...");
         }
 
         if (device && !context) {
             device->GetImmediateContext(&context);
-            spdlog::info("[Hooks] Context...");
         }
 
         if (!hwnd) {
             DXGI_SWAP_CHAIN_DESC desc{};
             sc->GetDesc(&desc);
             hwnd = desc.OutputWindow;
-            spdlog::info("[Hooks] HWND...");
         }
 
         IMGUI_CHECKVERSION();
@@ -81,16 +78,14 @@ static HRESULT __stdcall Hook_Present(IDXGISwapChain* sc, UINT sync, UINT flags)
         _ioPtr.Fonts->AddFontDefault();
 
         boldFont = _ioPtr.Fonts->AddFontFromFileTTF(
-            "Data/SKSE/Plugins/TrueGuardAssets/fonts/Quicksand-Bold.ttf", 16
+            "Data/SKSE/Plugins/TrueGuardAssets/fonts/BarlowCondensed-Bold.ttf", 16
         );
 
         regularFont = _ioPtr.Fonts->AddFontFromFileTTF(
-            "Data/SKSE/Plugins/TrueGuardAssets/fonts/Quicksand-Regular.ttf", 16
+            "Data/SKSE/Plugins/TrueGuardAssets/fonts/BarlowCondensed-Medium.ttf", 16
         );
 
         CreateRenderTarget(sc);
-
-        spdlog::info("[Hooks] Success initiating internal imgUI!");
 
         init = true;
     }
@@ -98,15 +93,12 @@ static HRESULT __stdcall Hook_Present(IDXGISwapChain* sc, UINT sync, UINT flags)
     if (!init || cInstance == nullptr)
         return g_OriPresent(sc, sync, flags);
 
-    spdlog::info("[Hook Present] Trying to build UI...");
-
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
     cInstance->draw();
 
-    spdlog::info("[Hook Present] Trying to Render UI...");
     ImGui::Render();
 
     // Ensure RTV exists (after alt-tab)
@@ -119,18 +111,10 @@ static HRESULT __stdcall Hook_Present(IDXGISwapChain* sc, UINT sync, UINT flags)
 
     context->OMSetRenderTargets(1, &mainRTV, nullptr);
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-    spdlog::info("[Hook Present] Trying to Set Render Target UI...");
 
     context->OMSetRenderTargets(1, &prevRTV, prevDSV);
     if (prevRTV) prevRTV->Release();
     if (prevDSV) prevDSV->Release();
-
-    if (mult > multMax) {
-        spdlog::info("[Hook Present] Called!");
-        mult = 0;
-    }
-
-    mult += 1;
 
     return g_OriPresent(sc, sync, flags);
 }
@@ -220,11 +204,15 @@ bool TGL::Hooks::TGLUIHook_Initialization()
 }
 
 void TGL::Hooks::InjectUI(UIInterfaceInjection* instance) {
-    destroyCurrentInjectedUIs();
+    if (instance == cInstance)
+        return;
+    destroyCurrentInjectedUIs(instance);
     instance->pushFont(regularFont, boldFont);
     cInstance = instance;
 }
 
-void TGL::Hooks::destroyCurrentInjectedUIs() {
-    if (cInstance) { cInstance = nullptr; }
+void TGL::Hooks::destroyCurrentInjectedUIs(UIInterfaceInjection* instance) {
+    if (!cInstance || instance == nullptr)
+        return;
+    if (cInstance == instance) { cInstance = nullptr; }
 }

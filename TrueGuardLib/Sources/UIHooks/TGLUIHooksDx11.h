@@ -11,5 +11,5 @@
 namespace TGL::Hooks {
 	bool TGLUIHook_Initialization();
 	void InjectUI(UIInterfaceInjection* instance);
-	void destroyCurrentInjectedUIs();
+	void destroyCurrentInjectedUIs(UIInterfaceInjection* instance);
 }

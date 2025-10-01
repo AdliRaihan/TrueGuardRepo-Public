@@ -3,12 +3,8 @@
 #include "../Constanta/GlobalConstant.h"
 
 // UIs
-#include "../UIHooks/TGLUIHooksDx11.h"
-#include "../UIs/DutyGuardUI.h"
 
 using namespace RE;
-
-DutyGuardUI* guardUI = nullptr;
 
 BSEventNotifyControl InputSinkEvent::ProcessEvent(
 	InputEvent* const* iEvent,
@@ -55,6 +51,7 @@ void RegisterInputListener() {
 }
 
 void getCurrentCrosshairTarget() {
+
 	// MOVE THIS LINE TO UTILS LATER
 	CrosshairPickData* pickData = RE::CrosshairPickData::GetSingleton();
 	
@@ -72,10 +69,4 @@ void getCurrentCrosshairTarget() {
 		return;
 	// END OF THIS LINE TO UTILS LATER
 
-	if (guardUI == nullptr)
-		guardUI = new DutyGuardUI();
-
-	guardUI->nameDisplay = objRefs.get()->GetDisplayFullName();
-
-	TGL::Hooks::InjectUI(guardUI);
 }

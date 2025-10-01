@@ -5,6 +5,7 @@
 #include "Sources/NPCInventoryCases/NPCInventoryCases.h"
 #include "Sources/InputEventListener/InputEventListener.h"
 #include "Sources/UIHooks/TGLUIHooksDx11.h"
+#include "Sources/ThreadEvents/ThreadEvents.h"
 
 // Just For Debug Entry Point
 #include <Windows.h>
@@ -32,19 +33,23 @@ SKSEPluginLoad(const SKSE::LoadInterface* skse) {
     SKSE::Init(skse);
 
     if (TGL::Hooks::TGLUIHook_Initialization()) {
-        spdlog::info("Hooking successfully initiated!");
+        spdlog::info("UI Hooking successfully initiated!");
     }
     else {
-        spdlog::info("Hooking Fails to initiates");
+        spdlog::info("UI Hooking Fails to initiates");
     }
 
+    // MARK: TEMPORARY
+
     SKSE::GetMessagingInterface()->RegisterListener([](SKSE::MessagingInterface::Message* msg) {
+
+        auto TE = new ThreadEvents();
+
         switch (msg->type) {
         case SKSE::MessagingInterface::kDataLoaded:
-            RegisterInventoryEvents();
+            TE->DialogueEvent(1);
             break;
         case SKSE::MessagingInterface::kInputLoaded:
-            RegisterInputListener();
             break;
         case SKSE::MessagingInterface::kPostLoadGame:
             break;
