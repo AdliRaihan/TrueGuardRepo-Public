@@ -18,7 +18,7 @@ BSEventNotifyControl InventorySink::ProcessEvent(
         DebugNotification("Item Added");
     if (oldCont == pc)
         DebugNotification("Item Lost");
-
+    
     return BSEventNotifyControl::kContinue;
 }
 

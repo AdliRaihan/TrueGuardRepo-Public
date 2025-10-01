@@ -1,14 +1,10 @@
 
+#pragma once
 #include "InputEventListener.h";
-#include "../Constanta/GlobalConstant.h"
-
-// UIs
-#include "../ImGUI/ImGUIHooks.h"
-#include "../ImGUI/UIs/DutyGuardUI.h"
 
 using namespace RE;
 
-DutyGuardUI* guardUI = nullptr;
+// DutyGuardUI* guardUI = nullptr;
 
 BSEventNotifyControl InputSinkEvent::ProcessEvent(
 	InputEvent* const* iEvent,
@@ -34,10 +30,9 @@ BSEventNotifyControl InputSinkEvent::ProcessEvent(
 
 		switch (dxScanCode) {
 		case RE::BSWin32KeyboardDevice::Key::kF1:
-			toggleMenu();
 			break;
 		case RE::BSWin32KeyboardDevice::Key::kG:
-			getCurrentCrosshairTarget();
+			TestUIImpl::Open();
 			break;
 		default:
 			break;
@@ -57,26 +52,27 @@ void RegisterInputListener() {
 
 void getCurrentCrosshairTarget() {
 	// MOVE THIS LINE TO UTILS LATER
+
 	CrosshairPickData* pickData = RE::CrosshairPickData::GetSingleton();
 	
-	if (!pickData)
+	if (!pickData) {
 		return;
+	}
 
 	auto refs = pickData->target;
 
-	if (!refs)
+	if (!refs) {
 		return;
+	}
 
 	auto objRefs = refs.get();
 
-	if (!objRefs.get())
+	if (!objRefs.get()) {
+		std::string v = objRefs->GetDisplayFullName();
 		return;
+	}
+	auto* player = RE::PlayerCharacter::GetSingleton();
+	player->dialogueItemTarget.get();
+		
 	// END OF THIS LINE TO UTILS LATER
-
-	if (guardUI == nullptr)
-		guardUI = new DutyGuardUI();
-
-	guardUI->nameDisplay = objRefs.get()->GetDisplayFullName();
-
-	injectUI(guardUI);
 }

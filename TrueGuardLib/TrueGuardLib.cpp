@@ -1,13 +1,28 @@
 ﻿
+#pragma once
 #include "TrueGuardLib.h"
 
 // My Mod
-#include "Sources/NPCInventoryCases/NPCInventoryCases.h"
-#include "Sources/InputEventListener/InputEventListener.h"
-#include "Sources/MinHookInt/TGLUIHooksDx11.h"
+#include "Sources/NPCInventoryCases.h"
+#include "Sources/InputEventListener.h"
+
+// Delete this later
 
 // Just For Debug Entry Point
 #include <Windows.h>
+#include <spdlog/sinks/basic_file_sink.h>
+
+void InitializeLogging() {
+    auto path = logger::log_directory();
+    if (!path) return;
+
+    *path /= "TrueGuard.log";  
+    auto sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(path->string(), true);
+    auto log = std::make_shared<spdlog::logger>("global log", std::move(sink));
+    spdlog::set_default_logger(log);
+    spdlog::set_pattern("%H:%M:%S [%^%l%$] %v");
+    spdlog::set_level(spdlog::level::debug);
+}
 
 // Entry Point SKSE - Skyrim 
 SKSEPluginVersion = []() {
@@ -23,7 +38,7 @@ SKSEPluginVersion = []() {
     }();
 
 SKSEPluginLoad(const SKSE::LoadInterface* skse) {
-
+    InitializeLogging();
     // --> Just for debug i'm too lazy writing log file
     // TODO: Make Log file instead of window
     // ::MessageBoxA(nullptr, "WARNING: True Guard Pagman Loaded V0.1! ", "SKESPLUGINDEBUGWAW!", MB_OK | MB_ICONWARNING);
@@ -31,17 +46,15 @@ SKSEPluginLoad(const SKSE::LoadInterface* skse) {
     // --> If Running should return handle != 0 in the logs
     SKSE::Init(skse);
 
-    if (TGLUIHook_Initialization()) {
+    auto pap = SKSE::GetPapyrusInterface();
 
-    }
+    TestUIImpl::registerMenu();
 
     SKSE::GetMessagingInterface()->RegisterListener([](SKSE::MessagingInterface::Message* msg) {
         switch (msg->type) {
         case SKSE::MessagingInterface::kDataLoaded:
-            RegisterInventoryEvents();
             break;
         case SKSE::MessagingInterface::kInputLoaded:
-            RegisterInputListener();
             break;
         case SKSE::MessagingInterface::kPostLoadGame:
             break;

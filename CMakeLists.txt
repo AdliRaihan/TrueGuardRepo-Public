@@ -23,14 +23,11 @@ endif()
 
 add_library(TrueGuardLib SHARED
   TrueGuardLib/TrueGuardLib.cpp
- "TrueGuardLib/Sources/NPCInventoryCases/NPCInventoryCases.h" 
- "TrueGuardLib/Sources/NPCInventoryCases/NPCInventoryCases.cpp" 
- "TrueGuardLib/Sources/InputEventListener/InputEventListener.h" 
- "TrueGuardLib/Sources/InputEventListener/InputEventListener.cpp" 
- "TrueGuardLib/Sources/ImGUI/ImGUIHooks.h"
- "TrueGuardLib/Sources/ImGUI/ImGUIHooks.cpp"
- "TrueGuardLib/Sources/MinHookInt/TGLUIHooksDx11.h"
- "TrueGuardLib/Sources/MinHookInt/TGLUIHooksDx11.cpp" "TrueGuardLib/Sources/Constanta/GlobalConstant.h" "TrueGuardLib/Sources/ImGUI/UIs/DutyGuardUI.h" "TrueGuardLib/Sources/Constanta/GlobalConstant.cpp" "TrueGuardLib/Sources/DependencyInjection/UIInterfaceInjection.h" "TrueGuardLib/Sources/ImGUI/UIs/DutyGuardUI.cpp")
+ "TrueGuardLib/Sources/NPCInventoryCases.h" 
+ "TrueGuardLib/Sources/NPCInventoryCases.cpp" 
+ "TrueGuardLib/Sources/InputEventListener.h" 
+ "TrueGuardLib/Sources/InputEventListener.cpp" 
+ "TrueGuardLib/Sources/Headers/TGBaseMenu.h"  "TrueGuardLib/Sources/TestUIImpl.h" "TrueGuardLib/Sources/TestUIImpl.cpp")
 
  add_library(imgui STATIC
     external/imgui/imgui.cpp
