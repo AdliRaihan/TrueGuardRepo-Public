@@ -14,3 +14,6 @@ public:
 };
 
 void RegisterInputListener();
+
+// Temporary
+void getCurrentCrosshairTarget();

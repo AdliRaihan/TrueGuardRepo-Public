@@ -4,7 +4,7 @@
 // My Mod
 #include "Sources/NPCInventoryCases/NPCInventoryCases.h"
 #include "Sources/InputEventListener/InputEventListener.h"
-#include "Sources/MinHookInt/TGLUIHooksDx11.h"
+#include "Sources/UIHooks/TGLUIHooksDx11.h"
 
 // Just For Debug Entry Point
 #include <Windows.h>
@@ -26,13 +26,16 @@ SKSEPluginLoad(const SKSE::LoadInterface* skse) {
 
     // --> Just for debug i'm too lazy writing log file
     // TODO: Make Log file instead of window
-    ::MessageBoxA(nullptr, "WARNING: True Guard Pagman Loaded V0.1! ", "SKESPLUGINDEBUGWAW!", MB_OK | MB_ICONWARNING);
+    // ::MessageBoxA(nullptr, "WARNING: True Guard Pagman Loaded V0.1! ", "SKESPLUGINDEBUGWAW!", MB_OK | MB_ICONWARNING);
     
     // --> If Running should return handle != 0 in the logs
     SKSE::Init(skse);
 
-    if (TGLUIHook_Initialization()) {
-
+    if (TGL::Hooks::TGLUIHook_Initialization()) {
+        spdlog::info("Hooking successfully initiated!");
+    }
+    else {
+        spdlog::info("Hooking Fails to initiates");
     }
 
     SKSE::GetMessagingInterface()->RegisterListener([](SKSE::MessagingInterface::Message* msg) {
